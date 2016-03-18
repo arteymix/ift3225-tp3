@@ -1,0 +1,16 @@
+{
+    "name": "arteymix/tp3",
+    "authors": [
+        {
+            "name": "Guillaume Poirier-Morency",
+            "email": "guillaumepoiriermorency@gmail.com"
+        },
+        {
+            "name": "Émile Trottier",
+            "email": "e.trottier@hotmail.com"
+        }
+    ],
+    "require": {
+        "php": "~5.3"
+    }
+}
