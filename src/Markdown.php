@@ -1,10 +1,10 @@
 <?php
 
-namespace \TP3\;
+namespace TP3;
 
 class Markdown
 {
-	public Markdown (TP2\WikiProvider $wiki_provider) {
+	public function __construct (\WikiProvider $wiki_provider) {
 		$this->wiki_provider = $wiki_provider;
 	}
 
@@ -41,10 +41,10 @@ class Markdown
 			return '<a href="'.$matches[2].'">'.$matches[1].'</a>';
 		}, $input);
 
-		$input = preg_replace_callback('//', function($matches), {
+		$input = preg_replace_callback('//', function($matches) {
 			if ($uri = $this->page_provider->resolve_uri($matches[1]))
 			{
-				return '<a href="'.$uri'">'.htmlspecialchars($matches[1]).'</a>';
+				return '<a href="'.$uri.'">'.htmlspecialchars($matches[1]).'</a>';
 			}
 			else
 			{
@@ -53,7 +53,7 @@ class Markdown
 		});
 
 		// paragraphes
-		$input = preg_replace_callback('/(.*)\n\n/', function($matches) {
+		$input = preg_replace_callback('/(.*)\n\n/', function($matches) {
 			return '<p>'.htmlspecialchars($matches[1]).'</p>';
 		}, $input);
 	}

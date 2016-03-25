@@ -1,11 +1,11 @@
 <?php
 
-namespace \TP3;
+namespace TP3;
 
 /**
  * Provider for {@link \Wiki} objects.
  */
-abstract class \WikiProvider
+abstract class WikiProvider
 {
 	/**
 	 * Find a {@link \TP3\Wiki} object given its wiki name.

@@ -10,6 +10,9 @@
             "email": "e.trottier@hotmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {"TP3\\": "src/"}
+    },
     "require": {
         "php": "~5.3"
     }
