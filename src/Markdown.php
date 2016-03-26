@@ -56,6 +56,11 @@ class Markdown
 		$input = preg_replace_callback('/(.*)\n\n/', function($matches) {
 			return '<p>'.htmlspecialchars($matches[1]).'</p>';
 		}, $input);
+
+		// nouvelle lignes
+		$input = nl2br($input);
+
+		return $input;
 	}
 }
 
