@@ -8,23 +8,18 @@ class Markdown
 		$this->wiki_provider = $wiki_provider;
 	}
 
-	public function transform($input)
+	public static function transform($input)
 	{
 		// en-têtes
-		$input = preg_replace_callback('/^(#)+(.*)$/', function($matches) {
+		$input = preg_replace_callback('/^(#{1,6})\s*(.*)$/m', function($matches) {
 			return '<h'.strlen($matches[1]).'>'.htmlspecialchars($matches[2]).'</h'.strlen($matches[1]).'>';
 		}, $input);
 
-		// englobe les double '-' par des '<ul/>'
-		// TODO: vérifier les captures multiples
-		$input = preg_replace_callback('/-(.*)$-(.*)$+/', function($matches) {
-			return '<ul>'.$matches[0].$matches[1].'</ul>';
+		$input = preg_replace_callback('/^-\s*(.*)$/m', function($matches) {
+			return '<ul><li>'.$matches[1].'</li></ul>';
 		}, $input);
 
-		// replace les - par des '<li/>'
-		$input = preg_replace_callback('/<ul>(.*)<\/ul>/', function($matches) {
-
-		}, $input);
+		$input = preg_replace('/<\/ul>\n<ul>/', '', $input);
 
 		// substitue les **gras**
 		$input = preg_replace_callback('/\*\*(.*)\*\*/', function($matches) {
@@ -37,28 +32,30 @@ class Markdown
 		}, $input);
 
 		// substitue les [lien](url)
-		$input = preg_replace_callback('/\[(.*)\]\(.*\)]', function($matches) {
+		$input = preg_replace_callback('/\[(.*)\]\((.*)\)/', function($matches) {
+			var_dump($matches);
 			return '<a href="'.$matches[2].'">'.$matches[1].'</a>';
 		}, $input);
 
-		$input = preg_replace_callback('//', function($matches) {
-			if ($uri = $this->page_provider->resolve_uri($matches[1]))
+		// substitue les WikiLinks
+		$input = preg_replace_callback('/[A-Z]\w+[A-Z]\w+/', function($matches) {
+			return '<a href="/index.php/'.$matches[0].'">'.$matches[0].'</a>';
+			if (TRUE || $uri = $this->page_provider->resolve_uri($matches[0]))
 			{
-				return '<a href="'.$uri.'">'.htmlspecialchars($matches[1]).'</a>';
+				return '<a href="'.$uri.'">'.htmlspecialchars($matches[0]).'</a>';
 			}
 			else
 			{
-				return '<a class="missing">'.htmlspecialchars($matches[1]).'</a>';
+				return '<a class="missing">'.htmlspecialchars($matches[0]).'</a>';
 			}
-		});
-
-		// paragraphes
-		$input = preg_replace_callback('/(.*)\n\n/', function($matches) {
-			return '<p>'.htmlspecialchars($matches[1]).'</p>';
 		}, $input);
 
-		// nouvelle lignes
-		$input = nl2br($input);
+		// paragraphes
+		$input = preg_replace_callback('/(.+)(\n\n|\Z)/', function($matches) {
+			return '<p>'.($matches[1]).'</p>';
+		}, $input);
+
+		$input = preg_replace('/\n/', '', $input);
 
 		return $input;
 	}
