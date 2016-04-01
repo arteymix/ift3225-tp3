@@ -1,3 +1,71 @@
-a.missing {
-    color: red;
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.message {
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+/* https://coolors.co/app/5bc0eb-fde74c-9bc53d-e55934-fa7921 */
+
+.success {
+    background-color: #9bc53d;
+    color: white;
+}
+
+.error {
+    background-color: #e55934 !important;
+    color: white;
+}
+
+.missing {
+    color: #e55934 !important;
+    color: white;
+}
+
+.cheated {
+    background-color: #5bc0eb;
+    color: white;
+}
+
+.selected {
+    background-color: #fde74c;
+}
+
+.current {
+    background-color: #dddddd;
+}
+
+.centered {
+    margin: 0 auto;
+}
+
+.completed {
+    text-decoration: line-through;
+}
+
+@media (min-width: 80em) {
+    .container {
+        width: 80em;
+    }
+
+    .row {
+        width: 80em;
+    }
+}
+
+.column {
+    display: inline-block;
+}
+
+.half {
+    width: 39em;
+}
+
+.quarter {
+    width: 19em;
 }

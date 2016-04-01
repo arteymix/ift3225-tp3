@@ -10,7 +10,7 @@ class Database
 	{
 		if (static::$instance === NULL)
 		{
-			static::$instance = new \PDO('mysql:/localhost');
+			static::$instance = new \PDO('mysql:host=localhost;dbname=tp3', 'tp3', 'tp3');
 		}
 		return static::$instance;
 	}
