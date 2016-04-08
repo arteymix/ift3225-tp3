@@ -40,14 +40,6 @@ class Markdown
 		// substitue les WikiLinks
 		$input = preg_replace_callback('/[A-Z]\w+[A-Z]\w+/', function($matches) {
 			return '<a href="/index.php/'.$matches[0].'">'.$matches[0].'</a>';
-			if (TRUE || $uri = $this->page_provider->resolve_uri($matches[0]))
-			{
-				return '<a href="'.$uri.'">'.htmlspecialchars($matches[0]).'</a>';
-			}
-			else
-			{
-				return '<a class="missing">'.htmlspecialchars($matches[0]).'</a>';
-			}
 		}, $input);
 
 		// paragraphes

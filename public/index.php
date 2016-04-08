@@ -1,5 +1,8 @@
 <?php
+
 require __DIR__ . '/../vendor/autoload.php';
+
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (\TP3\Database::instance()
@@ -22,22 +25,31 @@ $wiki = \TP3\Wiki::find_by_wiki_name($wiki_title);
 </head>
 <body>
 <div class="container">
-    <?php if ($wiki): ?>
-        <h1><?php echo $wiki ? htmlspecialchars($wiki->title) : ':(' ?></h1>
-        <div class="row">
-            <?php echo $wiki ? \TP3\Markdown::transform($wiki->document) : ':(' ?>
-        </div>
-    <?php else: ?>
-        <h1>Créez </h1>
+    <?php require __DIR__.'/../templates/navigation.php' ?>
+    <?php if (!$wiki || array_key_exists('edit', $_GET)): ?>
+        <h1><?php echo $wiki ? ($wiki->title ? $wiki->title : 'Accueil') . ' <small>modifier</small>' : 'Créez un nouveau Wiki' ?></h1>
         <form method="post">
             <p>
-                <input name="title" value="<?php echo $wiki_title ?>">
+                <input name="title" value="<?php echo $wiki ? $wiki->title : $wiki_title ?>">
             </p>
             <p>
-                <textarea name="document"></textarea>
+                <textarea name="document"><?php echo $wiki ? $wiki->document : '' ?></textarea>
             </p>
             <input type="submit">
         </form>
+    <?php else: ?>
+        <h1><?php echo $wiki ? htmlspecialchars($wiki->title ? $wiki->title : 'WikiLeaks') : ':(' ?></h1>
+        <div class="row">
+            <?php echo $wiki ? \TP3\Markdown::transform($wiki->document) : ':(' ?>
+            <p>
+                Créé le <?php echo $wiki->created ?>
+                <?php if ($author = \TP3\User::find_by_id($wiki->author_id)): ?>
+                    par <?php echo $author->username ?>
+                <?php else: ?>
+                    par un usager anonyme
+                <?php endif; ?>
+            </p>
+        </div>
     <?php endif ?>
 </div>
 </body>
