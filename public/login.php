@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user = \TP3\User::authenticate($_POST['username'], $_POST['password'])) {
         $_SESSION['user_id'] = $user->id;
         header('HTTP/1.1 302 Temporary');
-        header('Location: /user.php/'.$user->username);
+        header('Location: '.\TP3\URL::rebase('/user.php/'.$user->username));
         exit;
     }
 }

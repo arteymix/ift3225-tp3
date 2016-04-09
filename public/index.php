@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ) // récupérer l'usager depuis la session
     {
         header('HTTP/1.1 302 Temporary');
-        header('Location: /index.php/' . $_POST['title']);
+        header('Location: '.\TP3\URL::rebase('/index.php/'.$_POST['title']));
         exit;
     }
 }

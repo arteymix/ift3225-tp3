@@ -7,12 +7,12 @@ session_start();
 if ($user = \TP3\User::current()) {
     if (!$user->admin) {
         header('HTTP/1.1 302 Temporary');
-        header('Location: /');
+        header('Location: '.\TP3\URL::rebase('/'));
         exit;
     }
 } else {
     header('HTTP/1.1 302 Temporary');
-    header('Location: /login.php');
+    header('Location: '.\TP3\URL::rebase('/login.php'));
     exit;
 }
 
