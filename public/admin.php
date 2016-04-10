@@ -20,6 +20,7 @@ if ($user = \TP3\User::current()) {
 <html>
 <head>
     <title>Administration</title>
+    <?php require __dir__.'/../templates/head.php'; ?>
 </head>
 <body>
 <?php require __DIR__.'/../templates/navigation.php'; ?>

@@ -16,10 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Authentification</title>
+    <?php require __dir__.'/../templates/head.php'; ?>
 </head>
 </body>
+<?php require __DIR__.'/../templates/navigation.php'; ?>
+<h1>Authentification</h1>
 <form method="post">
-    <h1>Authentification</h1>
 
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user === NULL) :?>
         <p>Échec de l'authentification</p>

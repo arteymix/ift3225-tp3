@@ -22,6 +22,7 @@ $wiki = \TP3\Wiki::find_by_wiki_name($wiki_title);
 <html>
 <head>
     <title><?php $wiki ? $wiki->title : 'Pas de Wiki :(' ?></title>
+    <?php require __dir__.'/../templates/head.php'; ?>
 </head>
 <body>
 <div class="container">
