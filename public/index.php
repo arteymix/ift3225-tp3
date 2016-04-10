@@ -50,6 +50,7 @@ $wiki = \TP3\Wiki::find_by_wiki_name($wiki_title);
                     par un usager anonyme
                 <?php endif; ?>
             </p>
+            <p><a href="?edit">Modifier</a></p>
         </div>
     <?php endif ?>
 </div>
