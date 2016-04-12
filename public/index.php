@@ -21,20 +21,20 @@ $wiki = \TP3\Wiki::find_by_wiki_name($wiki_title);
 ?><!DOCTYPE html>
 <html>
 <head>
-    <title><?php $wiki ? $wiki->title : 'Pas de Wiki :(' ?></title>
+    <title><?php $wiki ? htmlspecialchars($wiki->title) : 'Pas de Wiki :(' ?></title>
     <?php require __dir__.'/../templates/head.php'; ?>
 </head>
 <body>
 <div class="container">
     <?php require __DIR__.'/../templates/navigation.php' ?>
     <?php if (!$wiki || array_key_exists('edit', $_GET)): ?>
-        <h1><?php echo $wiki ? ($wiki->title ? $wiki->title : 'Accueil') . ' <small>modifier</small>' : 'Créez un nouveau Wiki' ?></h1>
+        <h1><?php echo $wiki ? ($wiki->title ? htmlspecialchars($wiki->title) : 'Accueil') . ' <small>modifier</small>' : 'Créez un nouveau Wiki' ?></h1>
         <form method="post">
             <p>
-                <input name="title" value="<?php echo $wiki ? $wiki->title : $wiki_title ?>">
+                <input name="title" value="<?php echo htmlspecialchars($wiki ? $wiki->title : $wiki_title) ?>">
             </p>
             <p>
-                <textarea name="document"><?php echo $wiki ? $wiki->document : '' ?></textarea>
+                <textarea style="width: 100%;" rows="20" name="document"><?php echo $wiki ? htmlspecialchars($wiki->document) : '' ?></textarea>
             </p>
             <input type="submit">
         </form>

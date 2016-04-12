@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 <head>
     <title>Inscription</title>
-    <?php require __dir__.'/../templates/head.php'; ?>
+    <?php require __DIR__.'/../templates/head.php'; ?>
 </head>
 </body>
 <form method="post">
