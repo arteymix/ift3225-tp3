@@ -43,4 +43,11 @@ class User
 			->prepare('insert into users (username, email, password_hash) values (?, ?, ?)')
 			->execute(array($username,  $email, password_hash($password, PASSWORD_BCRYPT)));
 	}
+
+	public function wikis() {
+		$stmt = \TP3\Database::instance()
+			->prepare('select * from wikis where author_id = ? order by created desc');
+		$stmt->execute(array($this->id));
+		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\TP3\Wiki');
+	}
 }
