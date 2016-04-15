@@ -28,27 +28,31 @@ if (\TP3\User::current() && \TP3\User::current()->admin) {
     <?php require __dir__ . '/../templates/head.php'; ?>
 </head>
 <body>
-<?php require __DIR__ . '/../templates/navigation.php' ?>
-<?php if (\TP3\User::current() && \TP3\User::current()->id === $user->id): ?>
-    <h1>Ma page</h1>
-<?php else: ?>
-    <h1>Page de l'usager <?php echo $user->username ?></h1>
-<?php endif; ?>
-<h2>Contributions</h2>
-<ul>
-    <?php foreach ($user->wikis() as $wiki): ?>
-        <li>
-            <a href="<?php echo \TP3\URL::rebase('/index.php/' . $wiki->title); ?>"><?php echo $wiki->title; ?></a>
-            <?php echo $wiki->parent_id ? 'Modifié' : 'Créé' ?>
-            le <?php echo $wiki->created ?>
-        </li>
-    <?php endforeach; ?>
-</ul>
-<?php if (\TP3\User::current() && \TP3\User::current()->admin): ?>
-    <form method="post">
-        <input type="hidden" name="id" value="<?php echo $user->id ?>">
-        <button>Exterminer</button>
-    </form>
-<?php endif; ?>
+<div class="centered container">
+    <?php require __DIR__ . '/../templates/navigation.php' ?>
+    <div class="row">
+        <?php if (\TP3\User::current() && \TP3\User::current()->id === $user->id): ?>
+            <h1>Ma page</h1>
+        <?php else: ?>
+            <h1>Page de l'usager <?php echo $user->username ?></h1>
+        <?php endif; ?>
+        <h2>Contributions</h2>
+        <ul>
+            <?php foreach ($user->wikis() as $wiki): ?>
+                <li>
+                    <a href="<?php echo \TP3\URL::rebase('/index.php/' . $wiki->title); ?>"><?php echo $wiki->title; ?></a>
+                    <?php echo $wiki->parent_id ? 'Modifié' : 'Créé' ?>
+                    le <?php echo $wiki->created ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+        <?php if (\TP3\User::current() && \TP3\User::current()->admin): ?>
+            <form method="post">
+                <input type="hidden" name="id" value="<?php echo $user->id ?>">
+                <button>Exterminer</button>
+            </form>
+        <?php endif; ?>
+    </div>
+</div>
 </body>
 </html>

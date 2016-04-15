@@ -22,7 +22,7 @@ $wikis = \TP3\Wiki::all_by_terms($_GET['q']);
                 <?php foreach ($wikis as $wiki): ?>
                     <li>
                         <a href="<?php echo \TP3\URL::rebase('/index.php/' . rawurlencode($wiki->title ? $wiki->title : 'Accueil')) ?>">
-                            <?php echo htmlspecialchars($wiki->title) ?>
+			<?php echo htmlspecialchars($wiki->title) ?> 
                         </a>
                     </li>
                 <?php endforeach; ?>

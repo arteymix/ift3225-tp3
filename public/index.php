@@ -38,49 +38,50 @@ if (!$wiki && !\TP3\User::current()) {
     <?php require __dir__ . '/../templates/head.php'; ?>
 </head>
 <body>
-<div class="container">
+<div class="centered container">
     <?php require __DIR__ . '/../templates/navigation.php' ?>
-    <div class="row">
-        <?php if (!$wiki || array_key_exists('edit', $_GET)): ?>
-            <h1><?php echo $wiki ? ($wiki->title ? htmlspecialchars($wiki->title) : 'Accueil') . ' <small>modifier</small>' : 'Créez un nouveau Wiki' ?></h1>
-            <form method="post">
-                <?php if ($wiki): ?>
-                    <input type="hidden" name="parent_id" value="<?php echo $wiki->id ?>">
-                <?php endif; ?>
-                <p>
-                    <input name="title" value="<?php echo htmlspecialchars($wiki ? $wiki->title : $wiki_title) ?>">
-                </p>
-                <p>
-            <textarea style="width: 100%;" rows="20"
-                      name="document"><?php echo $wiki ? htmlspecialchars($wiki->document) : '' ?></textarea>
-                </p>
-                <input type="submit">
-            </form>
-        <?php else: ?>
+    <?php if (!$wiki || array_key_exists('edit', $_GET)): ?>
+        <div class="row">
+           <h1><?php echo $wiki ? ($wiki->title ? htmlspecialchars($wiki->title) : 'Accueil') . ' <small>modifier</small>' : 'Créez un nouveau Wiki' ?></h1>
+           <form method="post">
+               <?php if ($wiki): ?>
+                   <input type="hidden" name="parent_id" value="<?php echo $wiki->id ?>">
+               <?php endif; ?>
+               <p>
+                   <input name="title" value="<?php echo htmlspecialchars($wiki ? $wiki->title : $wiki_title) ?>">
+               </p>
+               <p>
+                   <textarea style="width: 100%;" rows="20" name="document"><?php echo $wiki ? htmlspecialchars($wiki->document) : '' ?></textarea>
+               </p>
+               <button type="submit">Modifier</button>
+           </form>
+        </div>
+    <?php else: ?>
+        <div class="row">
             <h1><?php echo $wiki ? htmlspecialchars($wiki->title ? $wiki->title : 'Accueil') : ':(' ?></h1>
-            <div class="row">
-                <?php echo $wiki ? \TP3\Markdown::transform($wiki->document) : ':(' ?>
-                <p>
-                    Créé le <?php echo $wiki->created ?>
-                    <?php if ($author = \TP3\User::find_by_id($wiki->author_id)): ?>
-                        par <a
-                            href="<?php echo \TP3\URL::rebase('/user.php/' . $author->username) ?>"><?php echo $author->username ?></a>.
-                    <?php else: ?>
-                        par un usager anonyme.
-                    <?php endif; ?>
-                </p>
-                <?php if (\TP3\User::current()): ?>
-                    <p>
-                        <a href="?edit">Modifier</a>
-                    <form method="post">
-                        <input type="hidden" name="title" value="<?php echo $wiki->title; ?>">
-                        <button name="delete">Détruire</button>
-                    </form>
-                    </p>
+            <?php echo $wiki ? \TP3\Markdown::transform($wiki->document) : ':(' ?>
+            <p>
+                Créé le <?php echo $wiki->created ?>
+                <?php if ($author = \TP3\User::find_by_id($wiki->author_id)): ?>
+                    par <a
+                        href="<?php echo \TP3\URL::rebase('/user.php/' . $author->username) ?>"><?php echo $author->username ?></a>.
+                <?php else: ?>
+                    par un usager anonyme.
                 <?php endif; ?>
-            </div>
-        <?php endif; ?>
-    </div   >
+            </p>
+            <?php if (\TP3\User::current()): ?>
+                <ul class="inline nav">
+                    <li><a href="?edit">Modifier</a></li>
+                    <li>
+                        <form method="post" style="display: inline;">
+                            <input type="hidden" name="title" value="<?php echo $wiki->title; ?>">
+                            <button name="delete">Détruire</button>
+                        </form>
+                   </li>
+                </ul>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
 </div>
 </body>
 </html>

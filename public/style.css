@@ -5,6 +5,22 @@ body {
     line-height: 1.5;
 }
 
+a {
+    color: #5bc0eb;
+}
+
+.inline {
+    padding-left: 0;
+}
+
+.inline > * {
+    display: inline;
+}
+
+.nav > * {
+    padding: 1em;
+}
+
 .message {
     padding: 1em;
     margin-bottom: 1em;
@@ -60,10 +76,11 @@ body {
 
 .column {
     display: inline-block;
+    padding: 0;
 }
 
 .half {
-    width: 40em;
+    width: 39em;
 }
 
 .quarter {
