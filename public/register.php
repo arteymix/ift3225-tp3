@@ -3,6 +3,8 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use \Respect\Validation\Validator as v;
+use \Respect\Validation\Exceptions\ValidationException;
+use \Respect\Validation\Exceptions\NestedValidationException;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') 
 {
@@ -22,8 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             header('Location: '.\TP3\URL::rebase('/login.php'));
             exit;
         } 
+	else
+	{
+	    $messages = array_merge($messages, array('"'.$_post['username'].'" est déjà utilisé'));
+	}
     }
-    catch (Exception $err)
+    catch (NestedValidationException $err)
+    {
+        $messages = array_merge($messages, $err->getMessages());
+    }
+    catch (ValidationException $err)
     {
         $messages = array_merge($messages, array($err->getMainMessage()));
     }
@@ -43,10 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     <h1>Inscription</h1>
 
     <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user === NULL) :?>
-        <p>Échec de l'inscription</p>
         <ul>
             <?php foreach ($messages as $message): ?>
-                <li><?php echo $message ?></li>
+                <li><span class="error"><?php echo $message ?></span></li>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
@@ -55,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 	    <input name="username" value="<?php echo array_key_exists('username', $_POST) ? $_POST['username'] : '' ?>" placeholder="Nom d'usager">
     </p>
     <p>
-        <input name="email" value="<?php echo array_key_exists('email', $_POST) ? $_POST['email'] : '' ?>" placeholder="Courriel">
+        <input type="email" name="email" value="<?php echo array_key_exists('email', $_POST) ? $_POST['email'] : '' ?>" placeholder="Courriel">
     </p>
     <p>
         <input name="password" type="password" placeholder="Mot de passe">

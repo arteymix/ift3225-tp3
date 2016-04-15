@@ -3,6 +3,8 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use \Respect\Validation\Validator as v;
+use \Respect\Validation\Exceptions\ValidationException;
+use \Respect\Validation\Exceptions\NestedValidationException;
 
 session_start();
 
@@ -21,11 +23,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         {
             $_SESSION['user_id'] = $user->id;
             header('HTTP/1.1 302 Temporary');
-            header('Location: '.\TP3\URL::rebase('/user.php/'.$user->username));
+            header('Location: '.(array_key_exists('redirect_uri', $_GET) ? $_GET['redirect_uri'] : \TP3\URL::rebase('/user.php/'.$user->username)));
             exit;
         }
+	else
+	{
+	    $messages = array_merge($messages, array('l\'authentification a échouée'));
+	}
     } 
-    catch (Exception $err)
+    catch (NestedValidationException $err)
+    {
+        $messages = array_merge($messages, $err->getMessages());
+    }
+    catch (ValidationException $err)
     {
         $messages = array_merge($messages, array($err->getMainMessage()));
     }
@@ -34,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 <html>
 <head>
     <title>Authentification</title>
-    <?php require __dir__.'/../templates/head.php'; ?>
+    <?php require __DIR__.'/../templates/head.php'; ?>
 </head>
 </body>
 <div class="centered container">
@@ -44,10 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
         <form method="post">
         
             <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user === NULL) :?>
-                <p>Échec de l'authentification</p>
-                <ul>
+                <ul class="error">
                     <?php foreach ($messages as $message): ?>
-                        <li><?php echo $message ?></li>
+                        <li><span class="error"><?php echo $message ?></span></li>
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>

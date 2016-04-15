@@ -11,7 +11,7 @@ if ($user = \TP3\User::current()) {
     }
 } else {
     header('HTTP/1.1 302 Temporary');
-    header('Location: ' . \TP3\URL::rebase('/login.php'));
+    header('Location: ' . \TP3\URL::rebase('/login.php').'?'.http_build_query(array('redirect_uri' => \TP3\URL::rebase('/admin.php'))));
     exit;
 }
 
