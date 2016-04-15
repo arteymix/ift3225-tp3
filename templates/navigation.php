@@ -10,4 +10,10 @@
         <a href="<?php echo \TP3\URL::rebase('/login.php'); ?>">Authentification</a>
         <a href="<?php echo \TP3\URL::rebase('/register.php'); ?>">Inscription</a>
     <?php endif; ?>
+    <li>
+        <form action="<?php echo \TP3\URL::rebase('/search.php'); ?>">
+            <input type="search" name="q">
+            <button type="submit">Rechercher</button>
+        </form>
+    </li>
 </ul>

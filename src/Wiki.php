@@ -13,4 +13,11 @@ class Wiki
 		$stmt->execute(array($wiki_name));
 		return $stmt->fetchObject('\TP3\Wiki');
 	}
+
+	public static function all_by_terms($terms) {
+		$stmt = \TP3\Database::instance()
+			->prepare('select * from wikis where lower(document) LIKE ? order by created desc');
+		$stmt->execute(array('%'.strtolower($terms).'%'));
+		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\TP3\Wiki');
+	}
 }
