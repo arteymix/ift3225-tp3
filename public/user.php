@@ -24,8 +24,8 @@ if (\TP3\User::current() && \TP3\User::current()->admin) {
 ?><!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo $user->username ?></title>
-    <?php require __dir__ . '/../templates/head.php'; ?>
+    <title><?php echo htmlspecialchars($user->username) ?></title>
+    <?php require __DIR__ . '/../templates/head.php'; ?>
 </head>
 <body>
 <div class="centered container">
@@ -34,13 +34,13 @@ if (\TP3\User::current() && \TP3\User::current()->admin) {
         <?php if (\TP3\User::current() && \TP3\User::current()->id === $user->id): ?>
             <h1>Ma page</h1>
         <?php else: ?>
-            <h1>Page de l'usager <?php echo $user->username ?></h1>
+            <h1>Page de l'usager <?php echo htmlspecialchars($user->username) ?></h1>
         <?php endif; ?>
         <h2>Contributions</h2>
         <ul>
             <?php foreach ($user->wikis() as $wiki): ?>
                 <li>
-                    <a href="<?php echo \TP3\URL::rebase('/index.php/' . $wiki->title); ?>"><?php echo $wiki->title; ?></a>
+                    <a href="<?php echo \TP3\URL::rebase('/index.php/' . rawurlencode($wiki->title)); ?>"><?php echo htmlspecialchars($wiki->title); ?></a>
                     <?php echo $wiki->parent_id ? 'Modifié' : 'Créé' ?>
                     le <?php echo $wiki->created ?>
                 </li>

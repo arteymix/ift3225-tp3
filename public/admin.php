@@ -36,7 +36,8 @@ if ($user = \TP3\User::current()) {
         <tr>
             <td style="text-align: left;"><?php echo $user->id ?></td>
             <td style="text-align: left;">
-            <a href="<?php echo \TP3\URL::rebase('/user.php/'.$user->username) ?>"><?php echo $user->username; ?></a>
+            <a href="<?php echo \TP3\URL::rebase('/user.php/'.rawurlencode(user->username)); ?>"><?php echo htmlspecialchars($user->username); ?></a>
+
             </td>
             <td style="text-align: left;"><?php echo $user->email ?></td>
             <td style="text-align: left;"><?php echo $user->admin ? 'Administrateur' : 'Usager' ?></td>

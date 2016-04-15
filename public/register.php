@@ -52,19 +52,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 <form method="post">
     <h1>Inscription</h1>
 
-    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user === NULL) :?>
+    <?php if ($_SERVER['REQUEST_METHOD'] === 'POST') :?>
         <ul>
             <?php foreach ($messages as $message): ?>
-                <li><span class="error"><?php echo $message ?></span></li>
+                <li><span class="error"><?php echo htmlspecialchars($message); ?></span></li>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
 
     <p>
-	    <input name="username" value="<?php echo array_key_exists('username', $_POST) ? $_POST['username'] : '' ?>" placeholder="Nom d'usager">
+	    <input name="username" value="<?php echo array_key_exists('username', $_POST) ? htmlspecialchars($_POST['username']) : '' ?>" placeholder="Nom d'usager">
     </p>
     <p>
-        <input type="email" name="email" value="<?php echo array_key_exists('email', $_POST) ? $_POST['email'] : '' ?>" placeholder="Courriel">
+        <input type="email" name="email" value="<?php echo array_key_exists('email', $_POST) ? htmlspecialchars($_POST['email']) : '' ?>" placeholder="Courriel">
     </p>
     <p>
         <input name="password" type="password" placeholder="Mot de passe">

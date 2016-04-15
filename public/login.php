@@ -56,13 +56,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
             <?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user === NULL) :?>
                 <ul class="error">
                     <?php foreach ($messages as $message): ?>
-                        <li><span class="error"><?php echo $message ?></span></li>
+                        <li><span class="error"><?php echo htmlspecialchars($message) ?></span></li>
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
         
             <p>
-                <input name="username" placeholder="Nom d'usager">
+		    <input name="username" value="<?php echo array_key_exists('username',  $_POST) ? htmlspecialchars($_POST['username']) : ''; ?>" placeholder="Nom d'usager">
             </p>
             <p>
                 <input name="password" type="password" placeholder="Mot de passe">
