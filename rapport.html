@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+  <head>
+    <title>Rapport</title>
+    <meta name="author" content="Émile Trottier, Guillaume Poirier-Morency"/>
+    <!--<link rel="stylesheet" href="style.css"/>-->
+  </head>
+  <body>
+    <div class="centered container">
+      <h1>Rapport</h1>
+	  
+	  <h3>À propos du Markdown</h3>
+	  <p>
+	  La première chose que nous avons fait au début du projet est de réaliser le transformateur de Markdown. Nous ne savions pas qu'un transformateur de base nous était fourni. Même si nous nous sommes aidés de celui-ci, le notre comporte quelques différences. Les expressions régulières ne sont pas exactement les mêmes (mais font sensiblement la même chose). Aussi, notre transformateur utilise la fonction preg_replace_callback(), ce qui évite les attaques par injection.
+	  </p>
+	  
+	  <h3>À propos des Wikis</h3>
+	  <p>
+	  Le seul moyen de créer un nouveau wiki est de modifier un wiki existant, d'y inclure le titre du nouveau wiki, de visualiser le wiki existant, cliquer sur le nouveau wiki (vide par défaut) et d'insérer le contenu de notre choix. Il n'y a donc pas de boutton "Créer un wiki". Ceci n'aurait pas de sens parce que nous assumons qu'il faut qu'un wiki soit référencé initialement.
+	  </p>
+	  
+	  <p>
+	  Nous avons créé un semblant d'historique de wikis. En effet, chaque wiki possède un attribut "parent_id" qui le lie au wiki à partir duquel on l'a créé. Ainsi, lorsque quelqu'un demande un certain wiki, nous lui présentons le wiki le plus récent.
+	  </p>
+	  
+	  <h3>À propos des usagers</h3>
+	  
+	  <p>
+	  Un non-participant peut :
+		<ul>
+			<li>Visualiser les wikis existants</li>
+			<li>Accéder à la page des participants, et ainsi voir leurs contributions</li>
+		</ul>
+	  </p>
+	  
+	  <p>
+	  En plus des actions possibles d'un non-participant, un participant peut :
+	  <ul>
+			<li>Modifier les wikis existants</li>
+			<li>Détruire les wikis existants</li>
+			<li>Créer des nouveaux wikis</li>
+		</ul>
+	  </p>
+	  
+	  <p>
+	  En plus des actions possibles d'un non-participant, le gestionnaire (appelé admin dans notre programme) peut :
+	  <ul>
+			<li>Détruire le compte d'un participant (action appelée "exterminer" dans le site web)</li>
+		</ul>
+	  </p>
+	  
+
+      
+	  <h3>À propos de la base de donnée</h3>
+	  <p>
+	  Nous avons monté notre application avec MySQL Workbench sur Windows, ce qui était plus simple au début. Lorsque le programme était presque fini, nous avons modifié quelques lignes que la base de données utilisée soit celle du DIRO. Cette modification ne nous a pas posé de problème (à l'instar de nos collègues, si on se fie aux nombreuses questions posées à ce sujet).
+	  
+	  </p>
+	  
+	  <p>
+	   Nous utilisons ...
+	   PDO, port, permission (755?), compte DIRO, password_hash, ...
+	  </p>
+	  
+	  
+	  <h3>Commentaires généraux</h3>
+	  <p>
+	  Les GET, POST, redirection et compagnie, bref tout ce qui a trait au protocole HTTP, ne nous a pas posé de problème. Une grande histoire d'amour.
+	  </p>
+	  
+	  <p>
+	  Nous ne nous sommes pas compliqué la vie avec l'affichage. Étant donné que ce n'est pas le but visé par ce TP, nous avons utilisé une stratégie simpliste. En gros, nous affichons uniquement ce qui est nécessaire à l'écran, et ce, sans dentelles. Nous avons inclu un peu de CSS mais vraiment le minimum.
+	  </p>
+	  
+      <p>
+	  Ce TP fut du gâteau pour Guillaume, un programmeur web expérimenté. Toutefois, Émile a eu plus de difficultés à suivre le rythme. Néanmoins, avec la bonne base en html apprise au début du cours, ce fut correct. Il ne suffisait que de rajouter du php, ce qui n'est pas si dur que ça. Les concepts de bases de données n'étaient nouveaux pour aucun des deux.
+      </p>
+
+    </div>
+  </body>
+</html>
