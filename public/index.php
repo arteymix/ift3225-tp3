@@ -34,7 +34,7 @@ if (!$wiki && !\TP3\User::current()) {
 ?><!DOCTYPE html>
 <html>
 <head>
-    <title><?php $wiki ? htmlspecialchars($wiki->title) : 'Pas de Wiki :(' ?></title>
+    <title><?php echo $wiki ? htmlspecialchars($wiki->title ? $wiki->title : 'Accueil') : 'Pas de Wiki :(' ?></title>
     <?php require __dir__ . '/../templates/head.php'; ?>
 </head>
 <body>
@@ -64,7 +64,7 @@ if (!$wiki && !\TP3\User::current()) {
                 Créé le <?php echo $wiki->created ?>
                 <?php if ($author = \TP3\User::find_by_id($wiki->author_id)): ?>
                     par <a
-                        href="<?php echo \TP3\URL::rebase('/user.php/' . $author->username) ?>"><?php echo $author->username ?></a>.
+                        href="<?php echo \TP3\URL::rebase('/user.php/' . rawurlencode($author->username)) ?>"><?php echo htmlspecialchars($author->username) ?></a>.
                 <?php else: ?>
                     par un usager anonyme.
                 <?php endif; ?>
@@ -74,12 +74,24 @@ if (!$wiki && !\TP3\User::current()) {
                     <li><a href="?edit">Modifier</a></li>
                     <li>
                         <form method="post" style="display: inline;">
-                            <input type="hidden" name="title" value="<?php echo $wiki->title; ?>">
+                            <input type="hidden" name="title" value="<?php echo htmlspecialchars($wiki->title); ?>">
                             <button name="delete">Détruire</button>
                         </form>
                    </li>
                 </ul>
             <?php endif; ?>
+            <h2>Versions précédentes</h2>
+            <ul>
+                <?php $w = $wiki; ?>
+                <?php while ($w = $w->parent()): ?>
+		    <li>
+			modifié le <?php echo $w->created; ?>
+                        <?php if ($w->author_id): ?>
+                            par <?php echo htmlspecialchars($w->author()->username) ?>
+                        <?php endif; ?>
+                   </li>
+                <?php endwhile; ?>
+            </ul>
         </div>
     <?php endif; ?>
 </div>

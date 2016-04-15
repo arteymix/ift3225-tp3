@@ -20,4 +20,18 @@ class Wiki
 		$stmt->execute(array('%'.strtolower($terms).'%'));
 		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\TP3\Wiki');
 	}
+
+	public function author() {
+		$stmt = \TP3\Database::instance()
+			->prepare('select * from users where id = ?');
+		$stmt->execute(array($this->author_id));
+		return $stmt->fetchObject('\TP3\User');
+	}
+
+	public function parent() {
+		$stmt = \TP3\Database::instance()
+			->prepare('select * from wikis where id = ?');
+		$stmt->execute(array($this->parent_id));
+		return $stmt->fetchObject('\TP3\Wiki');
+	}
 }
