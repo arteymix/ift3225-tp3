@@ -3,78 +3,178 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
   <head>
     <title>Rapport</title>
-    <meta name="author" content="…mile Trottier, Guillaume Poirier-Morency"/>
-    <!--<link rel="stylesheet" href="style.css"/>-->
+    <meta name="author" content="√âmile Trottier, Guillaume Poirier-Morency"/>
+    <link rel="stylesheet" href="public/style.css">
   </head>
   <body>
     <div class="centered container">
       <h1>Rapport</h1>
-	  
-	  <h3>¿ propos du Markdown</h3>
-	  <p>
-	  La premiËre chose que nous avons fait au dÈbut du projet est de rÈaliser le transformateur de Markdown. Nous ne savions pas qu'un transformateur de base nous Ètait fourni. MÍme si nous nous sommes aidÈs de celui-ci, le notre comporte quelques diffÈrences. Les expressions rÈguliËres ne sont pas exactement les mÍmes (mais font sensiblement la mÍme chose). Aussi, notre transformateur utilise la fonction preg_replace_callback(), ce qui Èvite les attaques par injection.
-	  </p>
-	  
-	  <h3>¿ propos des Wikis</h3>
-	  <p>
-	  Le seul moyen de crÈer un nouveau wiki est de modifier un wiki existant, d'y inclure le titre du nouveau wiki, de visualiser le wiki existant, cliquer sur le nouveau wiki (vide par dÈfaut) et d'insÈrer le contenu de notre choix. Il n'y a donc pas de boutton "CrÈer un wiki". Ceci n'aurait pas de sens parce que nous assumons qu'il faut qu'un wiki soit rÈfÈrencÈ initialement.
-	  </p>
-	  
-	  <p>
-	  Nous avons crÈÈ un semblant d'historique de wikis. En effet, chaque wiki possËde un attribut "parent_id" qui le lie au wiki ‡ partir duquel on l'a crÈÈ. Ainsi, lorsque quelqu'un demande un certain wiki, nous lui prÈsentons le wiki le plus rÈcent.
-	  </p>
-	  
-	  <h3>¿ propos des usagers</h3>
-	  
-	  <p>
-	  Un non-participant peut :
-		<ul>
-			<li>Visualiser les wikis existants</li>
-			<li>AccÈder ‡ la page des participants, et ainsi voir leurs contributions</li>
-		</ul>
-	  </p>
-	  
-	  <p>
-	  En plus des actions possibles d'un non-participant, un participant peut :
-	  <ul>
-			<li>Modifier les wikis existants</li>
-			<li>DÈtruire les wikis existants</li>
-			<li>CrÈer des nouveaux wikis</li>
-		</ul>
-	  </p>
-	  
-	  <p>
-	  En plus des actions possibles d'un non-participant, le gestionnaire (appelÈ admin dans notre programme) peut :
-	  <ul>
-			<li>DÈtruire le compte d'un participant (action appelÈe "exterminer" dans le site web)</li>
-		</ul>
-	  </p>
-	  
 
-      
-	  <h3>¿ propos de la base de donnÈe</h3>
-	  <p>
-	  Nous avons montÈ notre application avec MySQL Workbench sur Windows, ce qui Ètait plus simple au dÈbut. Lorsque le programme Ètait presque fini, nous avons modifiÈ quelques lignes que la base de donnÈes utilisÈe soit celle du DIRO. Cette modification ne nous a pas posÈ de problËme (‡ l'instar de nos collËgues, si on se fie aux nombreuses questions posÈes ‡ ce sujet).
-	  
-	  </p>
-	  
-	  <p>
-	   Nous utilisons ...
-	   PDO, port, permission (755?), compte DIRO, password_hash, ...
-	  </p>
-	  
-	  
-	  <h3>Commentaires gÈnÈraux</h3>
-	  <p>
-	  Les GET, POST, redirection et compagnie, bref tout ce qui a trait au protocole HTTP, ne nous a pas posÈ de problËme. Une grande histoire d'amour.
-	  </p>
-	  
-	  <p>
-	  Nous ne nous sommes pas compliquÈ la vie avec l'affichage. …tant donnÈ que ce n'est pas le but visÈ par ce TP, nous avons utilisÈ une stratÈgie simpliste. En gros, nous affichons uniquement ce qui est nÈcessaire ‡ l'Ècran, et ce, sans dentelles. Nous avons inclu un peu de CSS mais vraiment le minimum.
-	  </p>
-	  
       <p>
-	  Ce TP fut du g‚teau pour Guillaume, un programmeur web expÈrimentÈ. Toutefois, …mile a eu plus de difficultÈs ‡ suivre le rythme. NÈanmoins, avec la bonne base en html apprise au dÈbut du cours, ce fut correct. Il ne suffisait que de rajouter du php, ce qui n'est pas si dur que Áa. Les concepts de bases de donnÈes n'Ètaient nouveaux pour aucun des deux.
+      L'application est √©crite en PHP et bas√©e sur <a>Composer</a>, un outil
+      permettant de g√©rer et inclure des d√©pendances. Nous avons utilis√© les
+      d√©pendances suivantes:
+      </p>
+
+      <ul>
+        <li><a href="https://packagist.org/packages/ircmaxell/password-compat">ircmaxell/password-compat</a></li>
+        <li><a href="https://packagist.org/packages/respect/validation">respect/validation</a></li>
+      </ul>
+
+      <p>
+      Pour pouvoir utilis√© <code>password_hash</code> et
+      <code>password_verify</code> qui n'√©taient pas disponibles sur PHP 5.3,
+      nous avons d√ª utiliser un polyfill.
+      </p>
+
+      <p>
+      Pour effectuer la validation des entr√©es de l'usager (e.g. un courriel,
+      un mot de passe), nous avons utilis√© une librairie de validation qui
+      pr√©sente un API fluide.
+      </p>
+
+      <p>
+      Il aurait √©t√© possible d'√©crire le projet sur un framework PHP, mais
+      l'aspect p√©dagogique aurait lit√©rallement pris le bord.
+      </p>
+
+      <p>
+      Nous avons r√©utilis√© le style des travaux pr√©c√©dents avec quelques
+      modifications mineures.
+      </p>
+
+      <h3>√Ä propos du Markdown</h3>
+      <p>
+      La premi√®re chose que nous avons fait au d√©but du projet est de r√©aliser le
+      transformateur de Markdown. Nous ne savions pas qu'un transformateur de
+      base nous √©tait fourni. M√™me si nous nous sommes aid√©s de celui-ci, le
+      notre comporte quelques diff√©rences. Les expressions r√©guli√®res ne sont pas
+      exactement les m√™mes (mais font sensiblement la m√™me chose). Aussi, notre
+      transformateur utilise la fonction <code>preg_replace_callback</code> pour
+      une transformation plus √©l√©gante et <code>htmlspecialchars</code> afin
+      d'√©viter les attaques par injection de type XSS.
+      </p>
+
+      <h3>√Ä propos des Wikis</h3>
+
+      <p>
+      La page initiale est un Wiki dont le titre est hard-cod√© pour Accueil.
+      C'est n√©cessaire puisque la page initiale correspond √† l'URI <code>/</code>
+      et qu'on prend pour titre toute valeur suivant la barre oblique √† l'aide de
+      la cl√© <code>'PATH_INFO'</code> dans la variable global
+      <code>$_SERVER</code>.
+      </p>
+
+      <p>
+      Le seul moyen de cr√©er un nouveau Wiki, √† la mani√®re traditionelle, est de
+      modifier un wiki existant, d'y inclure un WikiName de le sauvegarder et de
+      suivre le lien produit.  Il n'y a donc pas de boutton "Cr√©er un wiki". Ceci
+      n'aurait pas de sens parce que nous assumons qu'il faut qu'un wiki soit
+      r√©f√©renc√© initialement.
+      </p>
+
+      <p>
+      Nous avons cr√©√© un historique de wikis. En effet, chaque wiki poss√®de un
+      attribut <code>parent_id</code> qui le lie au wiki √† partir duquel on l'a
+      cr√©√©. Ainsi, lorsque quelqu'un demande un certain wiki, nous lui
+      pr√©sentons le wiki le plus r√©cent et nous affichons les versions
+      pr√©c√©dentes accompagn√©es de l'auteur de la modification.
+      </p>
+
+      <h3>√Ä propos des usagers</h3>
+
+      <p>
+      Un non-participant peut :
+      <ul>
+        <li>Visualiser les wikis existants</li>
+        <li>Acc√©der √† la page des participants, et ainsi voir leurs contributions</li>
+      </ul>
+      </p>
+
+      <p>
+      En plus des actions possibles d'un non-participant, un participant peut :
+      <ul>
+        <li>Modifier les wikis existants</li>
+        <li>D√©truire les wikis existants</li>
+        <li>Cr√©er des nouveaux wikis</li>
+      </ul>
+      </p>
+
+      <p>
+      En plus des actions possibles d'un non-participant, le gestionnaire (appel√© admin dans notre programme) peut :
+      <ul>
+        <li>D√©truire le compte d'un participant (action appel√©e ¬´ exterminer ¬ª dans le site web)</li>
+      </ul>
+      </p>
+
+      <h3>√Ä propos de la base de donn√©e</h3>
+      <p>
+      Nous avons mont√© notre application avec MySQL Workbench sur Windows, ce
+      qui √©tait plus simple au d√©but. Lorsque le programme √©tait presque fini,
+      nous avons modifi√© quelques lignes de la connexion (voir le singleton
+      <code>\TP3\Database</code>) afin qu'elle utilise celle du DIRO.
+      </p>
+
+      <p>
+      En production, les secrets sont pass√© par variable d'environnement et
+      r√©cup√©rer √† l'aide de <code>getenv</code>. Il suffit d'ajouter des
+      directives <code>SetEnv</code> dans le fichier <code>.htaccess</code>.
+      </p>
+
+      Cette
+      modification ne nous a pas pos√© de probl√®me (√† l'instar de nos coll√®gues,
+      si on se fie aux nombreuses questions pos√©es √† ce sujet).
+      </p>
+
+      <p>
+      Nous utilisons PDO avec l'attribut <code>\PDO::FETCH_CLASS</code> afin
+      d'extraire les donn√©es directement dans une instance d'une classe qui
+      mod√©lise les usagers et les wikis. L'avantage principale de cette
+      approche et qu'elle nous permet de d√©finir des m√©thodes statiques (e.g.
+      <code>\TP3\User::all</code>) qui retournent un it√©rateur sur des usagers
+      et de pouvoir ensuite r√©cup√©rer les wikis associ√©s avec
+      <code>$user->wikis()</code>.
+      </p>
+
+      <h3>Commentaires g√©n√©raux</h3>
+
+      <p>
+      Les GET, POST, redirection et compagnie, bref tout ce qui a trait au
+      protocole HTTP, ne nous a pas pos√© de probl√®me. Bref, une grande histoire
+      d'amour.
+      </p>
+
+      <p>
+      GET est utilis√© pour pas mal tout ce qui consitue un acc√®s √† une page et
+      la recherche o√π le param√®tre <code>q</code> sert √† passer les termes.
+      </p>
+
+      <p>
+      POST est utilis√© pour les formulaires d'enregistrement,
+      d'authentification ainsi que la cr√©ation d'un Wiki
+      </p>
+
+      <p>
+      Nous aurions aim√© utiliser <code>DELETE</code> pour supprimer un Wiki,
+      mais ce n'est pas tr√®s bien support√© sur les navigateurs. √Ä l'instar,
+      nous avons d√ª effectuer un <code>POST</code> avec une cl√© indiquant que
+      le Wiki doit √™tre supprim√©.
+      </p>
+
+      <p>
+      Nous ne nous sommes pas compliqu√© la vie avec l'affichage. √âtant donn√©
+      que ce n'est pas le but vis√© par ce TP, nous avons utilis√© une strat√©gie
+      simpliste. En gros, nous affichons uniquement ce qui est n√©cessaire √†
+      l'√©cran, et ce, sans dentelles. Nous avons inclu un peu de CSS mais
+      vraiment le minimum.
+      </p>
+
+      <p>
+      Ce TP fut du g√¢teau pour Guillaume, un programmeur web exp√©riment√©.
+      Toutefois, √âmile a eu plus de difficult√©s √† suivre le rythme. N√©anmoins,
+      avec la bonne base en html apprise au d√©but du cours, ce fut correct. Il
+      ne suffisait que de rajouter du php, ce qui n'est pas si dur que √ßa. Les
+      concepts de bases de donn√©es n'√©taient nouveaux pour aucun des deux.
       </p>
 
     </div>
