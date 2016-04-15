@@ -9,6 +9,10 @@ a {
     color: #5bc0eb;
 }
 
+h1 > small {
+    color: gray;
+}
+
 code {
     color: #e55934;
 }

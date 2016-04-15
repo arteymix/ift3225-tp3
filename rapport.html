@@ -8,7 +8,12 @@
   </head>
   <body>
     <div class="centered container">
-      <h1>Rapport</h1>
+
+      <h1>Rapport <small>TP3</small></h1>
+
+      <p>
+      Le TP3 est disponible <a href="public/index.php">ici</a>.
+      </p>
 
       <p>
       L'application est écrite en PHP et basée sur <a>Composer</a>, un outil
@@ -22,7 +27,7 @@
       </ul>
 
       <p>
-      Pour pouvoir utilisé <code>password_hash</code> et
+      Pour pouvoir utiliser <code>password_hash</code> et
       <code>password_verify</code> qui n'étaient pas disponibles sur PHP 5.3,
       nous avons dû utiliser un polyfill.
       </p>
@@ -138,6 +143,41 @@
       <code>\TP3\User::all</code>) qui retournent un itérateur sur des usagers
       et de pouvoir ensuite récupérer les wikis associés avec
       <code>$user->wikis()</code>.
+      </p>
+
+      <p>
+      Le schéma de la base est relativement simple et constitué de deux tables:
+      <code>users</code> et <code>wikis</code>. Les usagers sont liés aux wikis
+      à titres d'auteurs. Si un auteur est supprimé, son Wiki sera assigné à
+      personne. Si un Wiki est supprimé, tous les Wikis qui le modifie seront
+      supprimés.
+      </p>
+
+      <h3>À propos du code</h3>
+
+      <p>
+      Le code est organisé dans le dossier <code>src</code> et automatiquement
+      chargé à l'aide de Composer. Tous les points d'entrés et les fichiers
+      accessible publiquement sont stockés dans le dossier <code>public</code>
+      afin d'éviter d'exposer des fichiers sensibles.
+      </p>
+
+      <ul>
+        <li>des modèles comme <code>User</code> et <code>Wiki</code></li>
+        <li>un singleton pour accéder à la base qui est un objet <code>\PDO</code></li>
+        <li>un générateur de Markdown</li>
+        <li>des utilitaires pour générer des URIs</li>
+      </ul>
+
+      <p>
+      Les morceaux de vues qui sont utilisés fréquemment comme les méta-données
+      dans la balise <code>head</code> ainsi que le menu sont stockés dans le
+      dossier <code>templates</code>.
+      </p>
+
+      <p>
+      Évidemment, il a fallu s'assurer de la compatibilité de notre code avec
+      la version pré-historique de PHP installée sur les serveurs du DIRO.
       </p>
 
       <h3>Commentaires généraux</h3>
