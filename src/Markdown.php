@@ -4,10 +4,6 @@ namespace TP3;
 
 class Markdown
 {
-	public function __construct (\WikiProvider $wiki_provider) {
-		$this->wiki_provider = $wiki_provider;
-	}
-
 	public static function transform($input)
 	{
 		$input = htmlspecialchars($input);
