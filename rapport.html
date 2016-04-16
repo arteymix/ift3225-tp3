@@ -29,7 +29,8 @@
       <p>
       Pour pouvoir utiliser <code>password_hash</code> et
       <code>password_verify</code> qui n'étaient pas disponibles sur PHP 5.3,
-      nous avons dû utiliser un polyfill.
+      nous avons dû utiliser un polyfill qui fournit une implantation en PHP
+      des fonctionnalités manquantes.
       </p>
 
       <p>
@@ -49,6 +50,7 @@
       </p>
 
       <h3>À propos du Markdown</h3>
+
       <p>
       La première chose que nous avons fait au début du projet est de réaliser le
       transformateur de Markdown. Nous ne savions pas qu'un transformateur de
@@ -59,6 +61,15 @@
       une transformation plus élégante et <code>htmlspecialchars</code> afin
       d'éviter les attaques par injection de type XSS.
       </p>
+
+      <p>
+      Nous avons rajouté quelques extensions intéressantes:
+      </p>
+
+      <ul>
+        <li>support les <code>`back-ticks`</code> pour écrire du code ;</li>
+        <li>images avec <code>![titre alternatif](url)</code>.</li>
+      </ul>
 
       <h3>À propos des Wikis</h3>
 
@@ -72,18 +83,28 @@
 
       <p>
       Le seul moyen de créer un nouveau Wiki, à la manière traditionelle, est de
-      modifier un wiki existant, d'y inclure un WikiName de le sauvegarder et de
-      suivre le lien produit.  Il n'y a donc pas de boutton "Créer un wiki". Ceci
-      n'aurait pas de sens parce que nous assumons qu'il faut qu'un wiki soit
+      modifier un Wiki existant, d'y inclure un WikiName de le sauvegarder et de
+      suivre le lien produit.  Il n'y a donc pas de boutton "Créer un Wiki". Ceci
+      n'aurait pas de sens parce que nous assumons qu'il faut qu'un Wiki soit
       référencé initialement.
       </p>
 
       <p>
-      Nous avons créé un historique de wikis. En effet, chaque wiki possède un
-      attribut <code>parent_id</code> qui le lie au wiki à partir duquel on l'a
-      créé. Ainsi, lorsque quelqu'un demande un certain wiki, nous lui
-      présentons le wiki le plus récent et nous affichons les versions
+      Nous avons créé un historique de Wikis. En effet, chaque Wiki possède un
+      attribut <code>parent_id</code> qui le lie au Wiki à partir duquel on l'a
+      créé. Ainsi, lorsque quelqu'un demande un certain Wiki, nous lui
+      présentons le Wiki le plus récent et nous affichons les versions
       précédentes accompagnées de l'auteur de la modification.
+      </p>
+
+      <p>
+      Il est également possible de consulter une version antérieure d'un Wiki.
+      </p>
+
+      <p>
+      Pour supprimer un Wiki, il faut également en supprimer toutes les
+      versions. On aurait préféré que cette actions soit exclusive aux
+      administrateurs.
       </p>
 
       <h3>À propos des usagers</h3>
@@ -93,8 +114,8 @@
       </p>
 
       <ul>
-        <li>Visualiser les wikis existants</li>
-        <li>Accéder à la page des participants, et ainsi voir leurs contributions</li>
+        <li>visualiser les Wikis existants ;</li>
+        <li>accéder à la page des participants, et ainsi voir leurs contributions.</li>
       </ul>
 
       <p>
@@ -102,9 +123,9 @@
       </p>
 
       <ul>
-        <li>Modifier les wikis existants</li>
-        <li>Détruire les wikis existants</li>
-        <li>Créer des nouveaux wikis</li>
+        <li>modifier les Wikis existants ;</li>
+        <li>détruire les Wikis existants ;</li>
+        <li>créer des nouveaux Wikis.</li>
       </ul>
 
       <p>
@@ -112,8 +133,15 @@
       </p>
 
       <ul>
-        <li>Détruire le compte d'un participant (action appelée « exterminer » dans le site web)</li>
+        <li>détruire le compte d'un participant (action appelée « exterminer » dans le site web) ;</li>
       </ul>
+
+      <p>
+      L'administrateur est identifié par l'attribut booléen <code>admin</code>
+      dans la base de données. Puisque l'on utilise
+      <code>\PDO::FETCH_CLASS</code>, il nous est possible de simplement tester
+      la condition <code>$user->admin</code>.
+      </p>
 
       <h3>À propos de la base de donnée</h3>
       <p>
@@ -138,19 +166,19 @@
       <p>
       Nous utilisons PDO avec l'attribut <code>\PDO::FETCH_CLASS</code> afin
       d'extraire les données directement dans une instance d'une classe qui
-      modélise les usagers et les wikis. L'avantage principale de cette
+      modélise les usagers et les Wikis. L'avantage principale de cette
       approche et qu'elle nous permet de définir des méthodes statiques (e.g.
       <code>\TP3\User::all</code>) qui retournent un itérateur sur des usagers
-      et de pouvoir ensuite récupérer les wikis associés avec
+      et de pouvoir ensuite récupérer les Wikis associés avec
       <code>$user->wikis()</code>.
       </p>
 
       <p>
       Le schéma de la base est relativement simple et constitué de deux tables:
-      <code>users</code> et <code>wikis</code>. Les usagers sont liés aux wikis
+      <code>users</code> et <code>wikis</code>. Les usagers sont liés aux Wikis
       à titres d'auteurs. Si un auteur est supprimé, son Wiki sera assigné à
-      personne. Si un Wiki est supprimé, tous les Wikis qui le modifie seront
-      supprimés.
+      personne (valeur <code>NULL</code>). Si un Wiki est supprimé, tous les
+      Wikis qui le modifie seront supprimés en cascade.
       </p>
 
       <h3>À propos du code</h3>
@@ -163,10 +191,11 @@
       </p>
 
       <ul>
-        <li>des modèles comme <code>User</code> et <code>Wiki</code></li>
-        <li>un singleton pour accéder à la base qui est un objet <code>\PDO</code></li>
-        <li>un générateur de Markdown</li>
-        <li>des utilitaires pour générer des URIs</li>
+        <li>un modèle abstrait qui fournit <code>Model::all</code> et <code>Model::find_by_id</code> ;</li>
+        <li>des modèles comme <code>User</code> et <code>Wiki</code> ;</li>
+        <li>un singleton pour accéder à la base qui est un objet <code>\PDO</code> ;</li>
+        <li>un générateur de Markdown ;</li>
+        <li>des utilitaires pour générer des URIs.</li>
       </ul>
 
       <p>
@@ -176,6 +205,20 @@
       </p>
 
       <p>
+      Pour éviter les attaques par cross-site scripting (XSS) ainsi que
+      d'autres vecteurs d'attaques, nous nous sommes assuré que:
+      </p>
+
+      <ul>
+        <li>tout le contenu sensible est présenté avec <code>htmlspecialchars</code> ;</li>
+        <li>les composantes d'URLs sont passé dans <code>rawurlencode</code> ;</li>
+        <li>
+          les paramètres des requêtes SQL sont passés sécuritairement avec
+          <code>\PDO::prepare</code> et <code>\PDO::execute</code>.
+        </li>
+      </ul>
+
+      <p>
       Évidemment, il a fallu s'assurer de la compatibilité de notre code avec
       la version pré-historique de PHP installée sur les serveurs du DIRO.
       </p>
@@ -183,18 +226,19 @@
       <h3>Commentaires généraux</h3>
 
       <p>
-      Les GET, POST, redirection et compagnie, bref tout ce qui a trait au
-      protocole HTTP, ne nous a pas posé de problème. Bref, une grande histoire
-      d'amour.
+      Les <code>GET</code>, <code>POST</code>, redirection et compagnie, bref
+      tout ce qui a trait au protocole HTTP, ne nous a pas posé de problème.
+      Bref, une grande histoire d'amour.
       </p>
 
       <p>
-      GET est utilisé pour pas mal tout ce qui consitue un accès à une page et
-      la recherche où le paramètre <code>q</code> sert à passer les termes.
+      <code>GET</code> est utilisé pour pas mal tout ce qui consitue un accès à
+      une page et la recherche où le paramètre <code>q</code> sert à passer les
+      termes.
       </p>
 
       <p>
-      POST est utilisé pour les formulaires d'enregistrement,
+      <code>POST</code> est utilisé pour les formulaires d'enregistrement,
       d'authentification ainsi que la création d'un Wiki
       </p>
 
@@ -214,12 +258,27 @@
       </p>
 
       <p>
-      Ce TP fut du gâteau pour Guillaume, un programmeur web expérimenté.
-      Toutefois, Émile a eu plus de difficultés à suivre le rythme. Néanmoins,
-      avec la bonne base en html apprise au début du cours, ce fut correct. Il
-      ne suffisait que de rajouter du php, ce qui n'est pas si dur que ça. Les
-      concepts de bases de données n'étaient nouveaux pour aucun des deux.
+      Les validations ne sont pas très <em>user friendly</em> et le site manque
+      drastiquement de rétro-action pour indiquer le succès ou l'échec d'une
+      action.
       </p>
+
+      <blockquote>
+        Ce TP fut du gâteau pour Guillaume, un programmeur web expérimenté.
+        Toutefois, Émile a eu plus de difficultés à suivre le rythme.
+        Néanmoins, avec la bonne base en html apprise au début du cours, ce fut
+        correct. Il ne suffisait que de rajouter du php, ce qui n'est pas si
+        dur que ça. Les concepts de bases de données n'étaient nouveaux pour
+        aucun des deux.
+        <p>&mdash; Émile à propos de Guillaume</p>
+      </blockquote>
+
+      <blockquote>
+        Émile a été d'une grande aide pour ce qui en est des décisions prises
+        sur la structure de la base de données ainsi que du respect des
+        consignes.
+        <p>&mdash; Guillaume à propos d'Émile</p>
+      </blockquote>
 
       <p>
       <a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>
