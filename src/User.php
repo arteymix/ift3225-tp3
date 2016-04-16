@@ -2,33 +2,29 @@
 
 namespace TP3;
 
-class User
+class User extends Model
 {
-	public static function all() {
-		$stmt = \TP3\Database::instance()
-			->prepare('select * from users');
-		$stmt->execute();
-		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\TP3\User');
-	}
-
+	/**
+	 * Récupère l'utilisateur actuellement connecté.
+	 *
+	 * Il est important que la session soit disponible avant d'appeler 
+	 * cette fonction.
+	 */
 	public static function current() {
 		return isset($_SESSION) && array_key_exists('user_id', $_SESSION) ? static::find_by_id($_SESSION['user_id']) : NULL;
 	}
 
-	public static function find_by_id($id) {
-		$stmt = \TP3\Database::instance()
-			->prepare('select * from users where id = ?');
-		$stmt->execute(array($id));
-		return $stmt->fetchObject('\TP3\User');
-	}
-
+	/**
+	 * Récupère un usager étant donné son pseudonyme.
+	 */
 	public static function find_by_username($username) {
-		$stmt = \TP3\Database::instance()
-			->prepare('select * from users where username = ?');
-		$stmt->execute(array($username));
-		return $stmt->fetchObject('\TP3\User');
+		return \TP3\Database::fetch('\TP3\User', 'select * from users where username = ?', array($username));
 	}
 
+	/**
+	 * Authentifie un usager et retourne le modèle correspondant en cas de 
+	 * succès.
+	 */
 	public static function authenticate($username, $password) {
 		$stmt = \TP3\Database::instance()
 			->prepare('select * from users where username = ?');
@@ -37,6 +33,9 @@ class User
 		return $user ? password_verify($password, $user->password_hash) ? $user : NULL : NULL;
 	}
 
+	/**
+	 * Inscrit un usager.
+	 */
 	public static function register($username, $email, $password)
 	{
 		return \TP3\Database::instance()
@@ -44,10 +43,14 @@ class User
 			->execute(array($username,  $email, password_hash($password, PASSWORD_BCRYPT)));
 	}
 
+	/**
+	 * Récupère tous les Wikis dont cet usager est l'auteur.
+	 *
+	 * Il peut s'agir de simples modifications.
+	 */
 	public function wikis() {
-		$stmt = \TP3\Database::instance()
-			->prepare('select * from wikis where author_id = ? order by created desc');
-		$stmt->execute(array($this->id));
-		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\TP3\Wiki');
+		return \TP3\Database::fetchAll('\TP3\Wiki', 
+			'select * from wikis where author_id = ? order by created desc', 
+			array($this->id));
 	}
 }

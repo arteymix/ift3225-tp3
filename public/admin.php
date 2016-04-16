@@ -62,7 +62,7 @@ if ($user = \TP3\User::current()) {
         <?php foreach (\TP3\Wiki::all() as $wiki) : ?>
             <tr>
                 <td style="text-align: left;"><?php echo $wiki->id ?></td>
-                <td style="text-align: left;"><?php echo htmlspecialchars($wiki->title) ?></td>
+		<td style="text-align: left;"><a href="<?php echo \TP3\URL::rebase('/index.php/'.rawurlencode($wiki->title)) ?>"><?php echo htmlspecialchars($wiki->title) ?></a></td>
                 <td style="text-align: left;"><?php echo $wiki->created ?></td>
                 <td style="text-align: left;"><?php echo $wiki->author_id ? $wiki->author()->username : 'Anonyme' ?></td>
             </tr>
