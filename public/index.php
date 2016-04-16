@@ -27,13 +27,13 @@ if (\TP3\User::current() && $_SERVER['REQUEST_METHOD'] === 'POST') {
     ) // récupérer l'usager depuis la session
     {
         header('HTTP/1.1 302 Temporary');
-        header('Location: ' . \TP3\URL::rebase('/index.php/' . $_POST['title']));
+        header('Location: ' . \TP3\URL::rebase('/index.php/' . rawurlencode($_POST['title'])));
         exit;
     }
 }
 
 $wiki_title = array_key_exists('PATH_INFO', $_SERVER) ? substr($_SERVER['PATH_INFO'], 1) : 'Home';
-$wiki = \TP3\Wiki::find_by_wiki_name($wiki_title);
+$wiki = array_key_exists('version', $_GET) ? \TP3\Wiki::find_by_id($_GET['version']) : \TP3\Wiki::find_by_wiki_name($wiki_title);
 if (!$wiki && !\TP3\User::current()) {
     require __DIR__ . '/../templates/error/404.php';
     exit;
@@ -102,12 +102,16 @@ if (!$wiki && !\TP3\User::current()) {
                 </ul>
                 </div>
             </div>
+	    <?php if ($wiki->parent()): ?>
             <h2>Versions précédentes</h2>
             <ul>
-                <?php $w = $wiki; $max = 10; ?>
-                <?php while (($w = $w->parent()) && $max--): ?>
+                <?php $w = $wiki; ?>
+                <?php while (($w = $w->parent())): ?>
 		    <li>
-			modifié le <?php echo $w->created; ?>
+		        <a href="?<?php echo http_build_query(array('version' => $w->id)); ?>">
+                        <?php echo $w->parent_id ? 'modifié' : 'créé'; ?>
+			</a>
+                        le <?php echo $w->created; ?>
                         <?php if ($w->author_id): ?>
 			    par <a href="<?php echo \TP3\URL::rebase('/user.php/'.rawurlencode($w->author()->username)) ?>"><?php echo htmlspecialchars($w->author()->username) ?></a>
                         <?php else: ?>
@@ -116,6 +120,7 @@ if (!$wiki && !\TP3\User::current()) {
                    </li>
                 <?php endwhile; ?>
             </ul>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 </div>
