@@ -8,8 +8,15 @@ header('HTTP/1.1 404 Not Found');
     <?php require __DIR__.'/../head.php'; ?>
 </head>
 <body>
-    <?php require __DIR__.'/../navigation.php'; ?>
-    <h1>Page non trouvée</h1>
+    <div class="centered container">
+        <?php require __DIR__.'/../navigation.php'; ?>
+        <div class="row">
+            <h1>Page non trouvée</h1>
+            <p>
+	    Il est possible que vous deviez <a href="<?php echo \TP3\URL::rebase('/register.php'); ?>">vous enregistrer</a> 
+	    ou <a href="<?php echo \TP3\URL::rebase('/login.php?'.http_build_query(array('redirect_uri' => \TP3\URL::rebase('/index.php').$_SERVER['PATH_INFO']))); ?>">vous autentifier</a> 
+	    afin de pouvoir créer cette page.
+        </div>
+    </div>
 </body>
-
 </html>

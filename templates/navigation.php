@@ -16,7 +16,7 @@
 </div>
 <div class="half column" style="text-align: right;">
     <form action="<?php echo \TP3\URL::rebase('/search.php'); ?>">
-    <input type="search" name="q" value="<?php echo array_key_exists('q', $_GET) ? htmlspecialchars($_GET['q']) : ''; ?>">
+    <input type="search" name="q" value="<?php echo array_key_exists('q', $_GET) ? htmlspecialchars($_GET['q']) : ''; ?>" placeholder="Rechercher un Wiki...">
 	<button type="submit">Rechercher</button>
     </form>
 </div>

@@ -7,9 +7,12 @@ header('HTTP/1.1 404 Not Found');
     <?php require __DIR__ . '/../head.php'; ?>
 </head>
 <body>
-<?php require __DIR__ . '/../navigation.php'; ?>
-<h1>Vous n'avez pas les permissions nécessaires</h1>
-<p style="display: none">Sale plèbe!</p>
+<div class="centered container">
+    <?php require __DIR__ . '/../navigation.php'; ?>
+    <div class="row">
+        <h1>Vous n'avez pas les permissions nécessaires</h1>
+        <p style="display: none">Sale plèbe!</p>
+    </div>
+</div>
 </body>
-
 </html>
