@@ -22,27 +22,54 @@ if ($user = \TP3\User::current()) {
     <?php require __dir__ . '/../templates/head.php'; ?>
 </head>
 <body>
+<div class="centered container">
 <?php require __DIR__ . '/../templates/navigation.php'; ?>
+<div class="row">
 <h1>Administration</h1>
-<table>
-    <tr>
-        <th style="text-align: left;">#</th>
-        <th style="text-align: left;">Nom d'usager</th>
-        <th style="text-align: left;">Courriel</th>
-        <th style="text-align: left;">Rôle</th>
-    </tr>
+</div>
+<div class="row">
+<div class="half column">
     <h2>Liste des usagers</h2>
-    <?php foreach (\TP3\User::all() as $user) : ?>
+    <table>
         <tr>
-            <td style="text-align: left;"><?php echo $user->id ?></td>
-            <td style="text-align: left;">
-            <a href="<?php echo \TP3\URL::rebase('/user.php/'.rawurlencode(user->username)); ?>"><?php echo htmlspecialchars($user->username); ?></a>
-
-            </td>
-            <td style="text-align: left;"><?php echo $user->email ?></td>
-            <td style="text-align: left;"><?php echo $user->admin ? 'Administrateur' : 'Usager' ?></td>
+            <th style="text-align: left;">#</th>
+            <th style="text-align: left;">Nom d'usager</th>
+            <th style="text-align: left;">Courriel</th>
+            <th style="text-align: left;">Rôle</th>
         </tr>
-    <?php endforeach; ?>
-</table>
+        <?php foreach (\TP3\User::all() as $user) : ?>
+            <tr>
+                <td style="text-align: left;"><?php echo $user->id ?></td>
+                <td style="text-align: left;">
+                <a href="<?php echo \TP3\URL::rebase('/user.php/'.rawurlencode($user->username)); ?>"><?php echo htmlspecialchars($user->username); ?></a>
+    
+                </td>
+                <td style="text-align: left;"><?php echo $user->email ?></td>
+                <td style="text-align: left;"><?php echo $user->admin ? 'Administrateur' : 'Usager' ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
+<div class="half column">
+    <h2>Liste des wikis</h2>
+    <table>
+        <tr>
+            <th style="text-align: left;">#</th>
+            <th style="text-align: left;">Titre</th>
+            <th style="text-align: left;">Date de création</th>
+            <th style="text-align: left;">Auteur</th>
+        </tr>
+        <?php foreach (\TP3\Wiki::all() as $wiki) : ?>
+            <tr>
+                <td style="text-align: left;"><?php echo $wiki->id ?></td>
+                <td style="text-align: left;"><?php echo htmlspecialchars($wiki->title) ?></td>
+                <td style="text-align: left;"><?php echo $wiki->created ?></td>
+                <td style="text-align: left;"><?php echo $wiki->author_id ? $wiki->author()->username : 'Anonyme' ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
+</div>
+</div>
 </body>
 </html>

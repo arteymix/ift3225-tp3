@@ -7,6 +7,13 @@ namespace TP3;
  */
 class Wiki
 {
+	public static function all () {
+		$stmt = \TP3\Database::instance()
+			->prepare('select * from wikis');
+		$stmt->execute();
+		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\TP3\Wiki');
+	}
+
 	public static function find_by_wiki_name ($wiki_name) {
 		$stmt = \TP3\Database::instance()
 			->prepare('select * from wikis where title = ? order by created desc');
@@ -16,7 +23,7 @@ class Wiki
 
 	public static function all_by_terms($terms) {
 		$stmt = \TP3\Database::instance()
-			->prepare('select * from wikis where lower(document) LIKE ? order by created desc');
+			->prepare('select * from wikis where lower(document) LIKE ? group by title order by created desc');
 		$stmt->execute(array('%'.strtolower($terms).'%'));
 		return $stmt->fetchAll(\PDO::FETCH_CLASS, '\TP3\Wiki');
 	}

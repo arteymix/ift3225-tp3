@@ -46,6 +46,9 @@ if (\TP3\User::current() && \TP3\User::current()->admin) {
                 </li>
             <?php endforeach; ?>
         </ul>
+        <hr>
+    </div>
+    <div class="row" style="text-align: right">
         <?php if (\TP3\User::current() && \TP3\User::current()->admin): ?>
             <form method="post">
                 <input type="hidden" name="id" value="<?php echo $user->id ?>">

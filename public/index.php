@@ -4,6 +4,13 @@ require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
+if (!\TP3\User::current() && array_key_exists('edit', $_GET))
+{
+	header('HTTP/1.1 302 Temporary');
+	header('Location: '.\TP3\URL::rebase('/login.php?'.http_build_query(array('redirect_uri' => \TP3\URL::rebase('/index.php'.$_SERVER['PATH_INFO'].'?edit')))));
+	exit;
+}
+
 if (\TP3\User::current() && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (array_key_exists('delete', $_POST)) {
         if (\TP3\Database::instance()
@@ -53,14 +60,24 @@ if (!$wiki && !\TP3\User::current()) {
                <p>
                    <textarea style="width: 100%;" rows="20" name="document"><?php echo $wiki ? htmlspecialchars($wiki->document) : '' ?></textarea>
                </p>
-               <button type="submit">Modifier</button>
+               <hr>
+               <ul class="inline nav" style="text-align: right;">
+	           <li><a href="<?php echo \TP3\URL::rebase('/index.php'.$_SERVER['PATH_INFO']) ?>">Annuler</a></li>
+		   <li><button type="submit"><?php echo $wiki ? 'Modifier' : 'Créer' ?></button></li>
+               </ul>
            </form>
         </div>
     <?php else: ?>
         <div class="row">
             <h1><?php echo $wiki ? htmlspecialchars($wiki->title ? $wiki->title : 'Accueil') : ':(' ?></h1>
+            <hr>
             <?php echo $wiki ? \TP3\Markdown::transform($wiki->document) : ':(' ?>
+            <hr>
+</div>
+<div class="row">
+<div class="half column">
             <p>
+            <small>
                 Créé le <?php echo $wiki->created ?>
                 <?php if ($author = \TP3\User::find_by_id($wiki->author_id)): ?>
                     par <a
@@ -68,26 +85,33 @@ if (!$wiki && !\TP3\User::current()) {
                 <?php else: ?>
                     par un usager anonyme.
                 <?php endif; ?>
+            </small>
             </p>
-            <?php if (\TP3\User::current()): ?>
-                <ul class="inline nav">
+            </div>
+            <div class="half column">
+                <ul class="inline nav" style="text-align: right;">
                     <li><a href="?edit">Modifier</a></li>
+                    <?php if (\TP3\User::current()): ?>
                     <li>
                         <form method="post" style="display: inline;">
-                            <input type="hidden" name="title" value="<?php echo htmlspecialchars($wiki->title); ?>">
-                            <button name="delete">Détruire</button>
+                                <input type="hidden" name="title" value="<?php echo htmlspecialchars($wiki->title); ?>">
+                                <button name="delete">Détruire</button>
                         </form>
                    </li>
+                   <?php endif; ?>
                 </ul>
-            <?php endif; ?>
+                </div>
+            </div>
             <h2>Versions précédentes</h2>
             <ul>
-                <?php $w = $wiki; ?>
-                <?php while ($w = $w->parent()): ?>
+                <?php $w = $wiki; $max = 10; ?>
+                <?php while (($w = $w->parent()) && $max--): ?>
 		    <li>
 			modifié le <?php echo $w->created; ?>
                         <?php if ($w->author_id): ?>
-                            par <?php echo htmlspecialchars($w->author()->username) ?>
+			    par <a href="<?php echo \TP3\URL::rebase('/user.php/'.rawurlencode($w->author()->username)) ?>"><?php echo htmlspecialchars($w->author()->username) ?></a>
+                        <?php else: ?>
+                            par un usager anonyme
                         <?php endif; ?>
                    </li>
                 <?php endwhile; ?>
